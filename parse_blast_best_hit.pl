@@ -12,7 +12,7 @@ use Data::Dumper;
 # originally for getting comps of best hits to extract from fasta files (transcriptomes)
 
 
-my $usage = "parse_blast_best_seq.pl blast_report > output.fa";
+my $usage = "parse_blast_best_hit.pl blast_report > output.fa";
 my $blast_report = $ARGV[0] or die $usage;
 
 # read blast report
@@ -47,8 +47,6 @@ while( my $result = $report->next_result ) {
 	    $evalue1 = $evalue;
 
 	    # get info and store it in array
-	    $result->query_name =~ /Protopteru_(G\d{5})/;
-	    my $query=$1;
 #	    my $hit_name = $hit->name;
 	    # to remove "lcl|" that appears in hit name
 	    $hit->name =~ /lcl\|(.+)/;
