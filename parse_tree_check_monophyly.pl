@@ -116,7 +116,7 @@ while( my $tree = $treeio->next_tree ) {
     # find node for taxa 
     $tax_num = scalar @clade2;
     if ( $tax_num < 2 ) {
-	print "\tAt least two taxa are required for testing monophyly and only $tax_num is present\n";
+	print "\tAt least two taxa are required for testing monophyly and only $tax_num is present\n\n";
     }
     else {
 
@@ -157,7 +157,7 @@ while( my $tree = $treeio->next_tree ) {
 	    print join (" ", @sorted_clade2), "\n";
 	}
 	else {
-	    print "\tTaxa are not monophyletic :-(\n";
+	    print "\tTaxa are not monophyletic :-(\n\n";
 #	    $out->write_tree($tree);
 	}
 
