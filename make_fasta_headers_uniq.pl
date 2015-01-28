@@ -53,7 +53,7 @@ foreach my $key ( sort keys %info ) {
 
 }
 
-print STDERR "$repeat_seq_count repeated sequences found, and made unique\n\ndone!\n\n";
+print STDERR "\n$repeat_seq_count repeated sequences found, and made unique\n\ndone!\n\n";
 
 
 
