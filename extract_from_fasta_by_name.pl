@@ -13,11 +13,12 @@ my $query = $ARGV[1] or die $usage;
 
 # read fasta file with SeqIO
 my $seqio_obj = Bio::SeqIO->new('-file' => "<$fasta",
-                		        '-format' => "fasta");
+                	        '-format' => "fasta");
                 		        
 # declare hash
 # Mejor hacerlo con un hash que con un array
 my %queries;
+my %queries_found;
 
 #open query file, chomp line and save it into the array with push
 #the hash will contain gene names (variable $line) as keys and 1 as a value (that's random)
@@ -36,18 +37,32 @@ while (my $seq_obj = $seqio_obj->next_seq){
 
     my $seqname = $seq_obj->primary_id;
     my $description = $seq_obj->description;
-	#La comparación nunca es con "=". Si son números "==". Si son caracteres "eq".
-	#if ($seq_obj->primary_id = $seqname) {
-	#Pero ahora lo hacemos con hashes, que es mejor:
-	if (exists($queries{$seqname})) {
-#		print ">",  $seq_obj->description, "\n";
-                print ">",  $seq_obj->primary_id, " ",  $seq_obj->description, "\n";
-		print $seq_obj->seq, "\n";
-	}
+
+    if ( exists ( $queries{$seqname} ) ) {
+
+	# if the sequence is found, store it in new hash
+	$queries_found{$seqname} = 1;
+
+#     	print ">",  $seq_obj->description, "\n";
+        print ">",  $seq_obj->primary_id, " ",  $seq_obj->description, "\n";
+       	print $seq_obj->seq, "\n";
+    }
+
 }
 
+# print out sequences that were not found
+foreach my $q ( keys %queries ) {
+
+    if ( !exists $queries_found{$q} ) {
+
+	print STDERR "sequence $q not found!\n";
+
+    }
+
+}
 
 __END__
+
 #Si quisieras hacerlo con arrays (sería mucho menos eficiente):
 while (my $seq_obj = $seqio_obj->next_seq){
 
