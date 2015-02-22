@@ -3,8 +3,8 @@
 use strict;
 
 # local bioperl library for hpc2
-use lib "/home/iirisar/iirisar/lib/perl5/";
-use Bio::Perl;
+#use lib "/home/iirisar/iirisar/lib/perl5/";
+#use Bio::Perl;
 
 use Bio::DB::Fasta;
 use Bio::SeqIO;
