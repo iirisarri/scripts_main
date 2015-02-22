@@ -117,8 +117,10 @@ while (my $seq_obj = $seqio_obj->next_seq){
 		
 	if ( exists $ENSEMBL{$sp_id} ) {
 	
-	# species_ENSXXXG0000_ENSXXXT0000
-	$header = $ENSEMBL{$1} . "_" . $seqname . "_" . $transcript;
+	    # species_ENSXXXG0000_ENSXXXT0000_XXXbp
+	    my $seq = $seq_obj->seq;
+	    my $length = length($seq);
+	    $header = $ENSEMBL{$1} . "_" . $seqname . "_" . $transcript . "_" . $length . "bp";
 	
 	}
 
