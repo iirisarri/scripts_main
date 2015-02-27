@@ -75,16 +75,17 @@ while ( my $line = <IN> ) {
 	 	my $output_name = $out_name . "_" . $aln_count . ".fa";
 
  		open (OUT, ">", $output_name) or die "Cannot create output file\n";
- 	}
 
-	# print sequences in fasta format to output file
-	foreach my $key ( sort keys %seq_hash ) {
+		# print sequences in fasta format to output file
+		foreach my $key ( sort keys %seq_hash ) {
 		
-		print OUT ">", $seq_hash{$key}{'taxa'}, "\n";
-		print OUT $seq_hash{$key}{'seq'}, "\n";
+			print OUT ">", $seq_hash{$key}{'taxa'}, "\n";
+			print OUT $seq_hash{$key}{'seq'}, "\n";
 
+		}
+		
 	}
-
+	
 	close(OUT);
 	
 }
