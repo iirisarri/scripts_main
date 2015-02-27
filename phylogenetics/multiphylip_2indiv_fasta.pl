@@ -13,6 +13,8 @@ use warnings;
 # e.g. change format from multilocus bootstrap replicates created by phybase to single fasta files
 # to be analyzed by fasttree (fasttree has a bug and cannot read multiphylip files)
 
+# it also removes species if seqs are only composed of X/-
+
 my $usage = "multiphylip_2indiv.fasta.pl infile output_name > stdout\n";
 my $infile = $ARGV[0] or die $usage;
 my $out_name = $ARGV[1] or die $usage;
@@ -97,7 +99,8 @@ while ( my $line = <IN> ) {
 		foreach my $key ( sort keys %seq_hash ) {
 
 			# scape species withouth data (seq is XXX or ---)
-		
+			next if ( $seq_hash{$key}{'seq'} =~ /^[X-]+$/ );
+			
 			print OUT ">", $seq_hash{$key}{'taxa'}, "\n";
 			print OUT $seq_hash{$key}{'seq'}, "\n";
 
