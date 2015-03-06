@@ -28,7 +28,7 @@ while (my $line = <IN>){
 	if ( $line =~ /WindowSize=(\d+)\sStepWidth=(\d+)\s_cols=(\d+)/ ) {
 		$window_size = $1;
 		#$step = $2;
-		#$matrix_length = $3;
+		$matrix_length = $3;
 		next;
 	}
 	
@@ -63,8 +63,12 @@ foreach my $key ( sort { $a <=> $b } keys %hash ) {
 	
 	    # get start and end coords for current block (2)
 	    $key =~ /(\d+)-(\d+)/;
-	    my $start_2 = $1;
-	    my $end_2 = $2;
+	    #my $start_2 = $1;
+	    #my $end_2 = $2;
+		# translate symtest coords (0-based) to raxml style (1-based)
+	    my $start_2 = $1 +1;
+	    my $end_2 = $2 +1;
+	    
 	    
 	    # assign coords for first block
 	    if ( $start_1 == 0 && $end_1 == 0 ) {
@@ -72,7 +76,7 @@ foreach my $key ( sort { $a <=> $b } keys %hash ) {
 	    	$end_1 = $end_2;
 	    	
 			$block_count++;
-	    	print "$key\t$hash{$key}\n";
+	    	print "$start_2-$end_2\t$hash{$key}\n";
 		}
 	    # compare coords from current block (1) with previous block (2)
 	    # scape until block 2 is not overlapping
@@ -81,7 +85,7 @@ foreach my $key ( sort { $a <=> $b } keys %hash ) {
 	    # print next block if not overlapping
 
 		$block_count++;
-	    print "$key\t$hash{$key}\n";
+	    print "$start_2-$end_2\t$hash{$key}\n";
 	    
 	    # re-assign coordinates of current block (2) to be previous (1) for next comparison
 	    $start_1 = $start_2;
@@ -94,5 +98,7 @@ foreach my $key ( sort { $a <=> $b } keys %hash ) {
 my $concat_size = $block_count * $window_size;
 
 print "\nNumber non-overlapping blocks with P < 0.05: $block_count\n";
-print "Approx. size of final matrix: $concat_size\n\n";
+print "Approx. size of final matrix: $concat_size\n";
+print "Size of original matrix: $matrix_length\n\n";
+
 
