@@ -13,7 +13,7 @@ while (my $line = <IN>) {
 	print "Gene_file\tBest_fit_model\n";
 	print $1, "\t";
     } elsif ($line =~/Best model according to .+\:(.+)/g) {
-	print $1 "\n";
+	print $1, "\n";
     }
 }
 
