@@ -23,7 +23,7 @@ my %hash;
 
 while (my $inseq = $seqio_obj->next_seq) {
 
-    if ( $inseq->seq =~ /^[-XN]*$/ ) {
+    if ( $inseq->seq =~ /^[-XNn]*$/ ) {
 	
 	print STDERR $inseq->primary_id, " contains only undetermined characters\n"; 
 
