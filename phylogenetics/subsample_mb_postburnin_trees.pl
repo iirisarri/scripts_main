@@ -63,17 +63,17 @@ while ( my $line =<IN> ) {
 		my @lines = split " ", $line;
 		my $gen_tree = $lines[4];
 		
-		
+#=pod		
 		# translate taxon names
 		foreach my $key ( keys %translate ) {
 
 			# Substitution: Use the \b anchor to match only on a word boundary
 			# Taxon names are always preceded by ( or , and followed by :
 			$gen_tree =~ s/\($key\b:/($translate{$key}:/;
-			$gen_tree =~ s/,$key\b:/($translate{$key}:/;
+			$gen_tree =~ s/,$key\b:/,$translate{$key}:/;
 			#print "$gen_tree\n";
 		}			
-			
+#=cut			
 		$out_trees{$curr_gen} = $gen_tree;
 	
 		# add X generations (according to subsampling frequency
@@ -88,9 +88,9 @@ while ( my $line =<IN> ) {
 # When multiple input files are processed in loop: redirect STDOUT to >> outfile 3
 # && use the following line to read-in the number of trees present in outfile
 
-#my $out_count = `wc -l outfile`;
+my $out_count = `wc -l outfile`;
 
-my $out_count = 0;
+#my $out_count = 0;
  
 foreach my $tree ( keys %out_trees ) {
 
