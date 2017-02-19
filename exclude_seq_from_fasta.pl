@@ -1,4 +1,4 @@
-#!/usr/bin/perl -w
+#!/usr/bin/perl
 
 use strict;
 use warnings;
@@ -37,6 +37,7 @@ while (my $seq_obj = $seqio_obj->next_seq){
     if ( exists ( $queries{$seqname} ) ) {
 
 	$removed++;
+	next;
     }
     else {
 	print ">",  $seq_obj->primary_id, " ",  $seq_obj->description, "\n";
