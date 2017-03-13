@@ -22,9 +22,6 @@ my $seqio_obj = Bio::SeqIO->new('-file' => "<$fasta",
 my %hash;
 my @seen;
 
-# print infile when executed in loop
-print STDERR "$fasta\n";
-
 while (my $inseq = $seqio_obj->next_seq) {
 
 	my $taxa = $inseq->primary_id;
@@ -34,7 +31,9 @@ while (my $inseq = $seqio_obj->next_seq) {
 	if ( exists $hash{$taxa} ) {
 	
 		push (@seen, $taxa);
-		print STDERR "$taxa present twice\n";
+
+		print STDERR "$fasta:\n";
+		print STDERR "\t$taxa present twice\n";
 		next; # skips repeated taxa
 	}
 	
@@ -47,7 +46,7 @@ while (my $inseq = $seqio_obj->next_seq) {
 foreach my $elem ( @seen ) {
 
 	delete $hash{$elem};
-	print STDERR "$elem removed!\n";
+	print STDERR "\t$elem removed!\n";
 }
 
 # print out sequence
