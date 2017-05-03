@@ -28,17 +28,20 @@ while (my $inseq = $seqio_in->next_seq) {
 	my $header = $inseq->id;
 	my $sequence = $inseq->seq;
 	
+	# specific for headers with format gene_name@taxa_name
+#	my ($gene, $taxa) = split ("\@", $header); 
+#	my $outfile = $gene . ".ref";
 	
+	my $outfile = $header . ".fa";
 	
-	# create seqio object
-	my $seqio_out = Bio::SeqIO->new(
-    	-file => ">$header.fa",
-    	-format => 'fasta'
-    	);
-    	
 	# print out sequence to file
-	$seqio_out->write_seq($inseq);
-	print STDERR "\twrote $header.fa\n";
+	open (OUT, ">", "$outfile") or die "Can't open $outfile\n";
+
+	print OUT ">$header\n";
+#	print OUT ">$taxa\n";
+	print OUT "$sequence\n"; 
+
+	print STDERR "\twrote $outfile\n";
 }
 
 print STDERR "\ndone!\n";
