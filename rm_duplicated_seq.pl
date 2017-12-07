@@ -19,6 +19,7 @@ my $usage = "rm_duplicated_seqs.pl infile.fa > outfile.uniq.fa\n";
 my $fasta = $ARGV[0] or die $usage; 
 
 my %sequences;
+my $changes = 0;
 
 my $seqio_obj = Bio::SeqIO->new('-file' => "<$fasta", 
 								'-format' => "fasta"
@@ -38,21 +39,30 @@ while (my $seqio_obj = $seqio_obj->next_seq) {
 	else {
 	
 		print STDERR "Skipping $name, identical sequence to $sequences{$seqio_obj->seq}\n";
+		$changes++;
 	}
 }
 
+# print new file if any sequence has been thrown out
+if ( $changes == 0 ) {
 
-my $outfile = $fasta . ".uniq.fa";
+	print STDERR "\n$fasta contains no duplicated sequences. OK!\n\ndone!\n\n";
 
-open(OUT, ">", $outfile);
-
-print STDERR "\nPrinting unique sequences to: $outfile...\n";
-
-foreach my $key (sort keys %sequences ) {
-
-	print OUT ">$sequences{$key}\n";
-	print OUT "$key\n";
 }
-close(OUT);
+else {
 
-print STDERR "\ndone!\n";
+	my $outfile = $fasta . ".uniq.fa";
+
+	open(OUT, ">", $outfile);
+
+	print STDERR "\nPrinting unique sequences to: $outfile...\n";
+
+	foreach my $key (sort keys %sequences ) {
+
+		print OUT ">$sequences{$key}\n";
+		print OUT "$key\n";
+	}
+	close(OUT);
+
+	print STDERR "\ndone!\n\n";
+}
