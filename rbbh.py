@@ -5,14 +5,11 @@ import numpy as np
 
 '''
 
-# save blastp by line into dict, splitting by tab
-# filter by evalue
-#save into dict (sorted query-hit)=rest
+Find reciprocal best blast hits (RBBH) from two input BLAST reports
 
-# reach my blast1:
-# find query-hit pairs in blast2
-# do they overlap > threshold?
-# print out
+There's an evalue threshold to select only significant hits (hard-coded)
+
+Blast reports must be in tabular format, with the following fields:
 
 # qseqid				sseqid					pident	mismatch	gapopen	qstart	qend	sstart	send	evalue	bitscore	qcovs	qcovhsp	qlen	slen	length
 # GPAL|GPLIN_000000100  GROS|GROS_g13706.t1     55.77   41      	3       81      184     3       101     2e-18   77.4    	55      55      190     108     104
@@ -91,35 +88,37 @@ for q_h in blast1:
         srange1  = set(range(scoord1[0], scoord1[1]))
 
         # does it overlap with any record with same query_hit iin blast2?
-        for m in blast2[q_h]:
+        if q_h in blast2:                           # first filter by q_h pairs that are present in blast2
 
-            #qseqid2 = blast2[q_h][m][0]
-            #sseqid2 = blast2[q_h][m][1]
-            qstart2 = int(blast2[q_h][m][5])
-            qend2 = int(blast2[q_h][m][6])
-            sstart2 = int(blast2[q_h][m][7])
-            send2 = int(blast2[q_h][m][8])
-            #evalue2 = float(blast2[q_h][m][9])
+            for m in blast2[q_h]:                   # then iterate over those records
 
-            qcoord2 = sorted([qstart2, qend2]) # sort coordinates for range()
-            scoord2 = sorted([sstart2, send2])
-            qrange2  = set(range(qcoord2[0], qcoord2[1])) # save as set, not range
-            srange2  = set(range(scoord2[0], scoord2[1]))
+                #qseqid2 = blast2[q_h][m][0]
+                #sseqid2 = blast2[q_h][m][1]
+                qstart2 = int(blast2[q_h][m][5])
+                qend2 = int(blast2[q_h][m][6])
+                sstart2 = int(blast2[q_h][m][7])
+                send2 = int(blast2[q_h][m][8])
+                #evalue2 = float(blast2[q_h][m][9])
 
-            if qrange1 & srange2 and qrange2 & srange1:
+                qcoord2 = sorted([qstart2, qend2]) # sort coordinates for range()
+                scoord2 = sorted([sstart2, send2])
+                qrange2  = set(range(qcoord2[0], qcoord2[1])) # save as set, not range
+                srange2  = set(range(scoord2[0], scoord2[1]))
 
-                # PRINT ALL PAIRS OF RBBH RECORDS
-                #print('\nRBBH pair:')
-                #print(blast1[q_h][n])
-                #print(blast2[q_h][m])
+                if qrange1 & srange2 and qrange2 & srange1:
 
-                # PRINT RBBH AS COORDINATES FOR SHINYCIRCOS
-                #only blast1 record is printed (blast2 record is redundant)
-                array=np.array(blast1[q_h][n])          # create numpy array to extract multiple elems at once
-                elem_to_print = [0,5,6,1,7,8]           # indices: qseqid qstart qend sseqid sstart send
-                print(','.join(array[elem_to_print]))
+                    # PRINT ALL PAIRS OF RBBH RECORDS
+                    #print('\nRBBH pair:')
+                    #print(blast1[q_h][n])
+                    #print(blast2[q_h][m])
 
-                # REGULAR TAB-DELIM PRINT
-                # array=np.array(blast1[q_h][n])          # create numpy array to extract multiple elems at once
-                # elem_to_print = [0,1,5,6,7,8,9]           # indices: qseqid qstart qend sseqid sstart send
-                # print(','.join(array[elem_to_print]))
+                    # PRINT RBBH AS COORDINATES FOR SHINYCIRCOS
+                    #only blast1 record is printed (blast2 record is redundant)
+                    array=np.array(blast1[q_h][n])          # create numpy array to extract multiple elems at once
+                    elem_to_print = [0,5,6,1,7,8]           # indices: qseqid qstart qend sseqid sstart send
+                    print(','.join(array[elem_to_print]))
+
+                    # REGULAR TAB-DELIM PRINT
+                    # array=np.array(blast1[q_h][n])          # create numpy array to extract multiple elems at once
+                    # elem_to_print = [0,1,5,6,7,8,9]           # indices: qseqid qstart qend sseqid sstart send
+                    # print(','.join(array[elem_to_print]))
