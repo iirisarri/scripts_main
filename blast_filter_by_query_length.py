@@ -18,7 +18,7 @@ infile1 = sys.argv[1] # blast output (tabular format outfmt6)
 infile2 = sys.argv[2] # queries (fasta)
 
 # declare
-aln_len_prop = int("0.75") # how much of the query length should be covered by the alignment?
+aln_len_prop = float("0.75") # how much of the query length should be covered by the alignment?
 query_lengths = dict() # saves queries from input fasta
 
 #pdb.set_trace()
